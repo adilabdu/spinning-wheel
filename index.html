@@ -17,12 +17,15 @@
 
         <button id="spin">Spin</button>
 
-        <div class="w-[390px] h-[390px] rounded-[50%] blur-lg bg-white absolute">
-
+        <div class="w-[390px] h-[390px] rounded-[50%] blur bg-white absolute">
         </div>
 
         <div class="flex items-center justify-center wheel">
             <canvas class="absolute" width="1000" height="1000" id="canvas"></canvas>
+
+            <div class="w-[190px] h-[190px] rounded-[50%] blur-lg bg-black absolute">
+            </div>
+
             <canvas class="absolute" width="1000" height="1000" id="little-wheel"></canvas>
     
             <div v-for="index in 38" :key="index" 
@@ -53,7 +56,10 @@
     <script>
 
         var canvas = document.getElementById('canvas');
+        var littleCanvas = document.getElementById('little-wheel');
+
         var context = canvas.getContext('2d');
+        var littleContext = littleCanvas.getContext('2d');
 
         var x = canvas.width / 2;
         var y = canvas.height / 2;
@@ -63,10 +69,10 @@
         var pieAngle = 2 * Math.PI / segments;
         var segmentDepth = 200;
 
-        drawSegments(segmentDepth);
-        drawSegments(95, false, ['#d0b58f', '#f6e9e0'], true);
+        drawSegments(segmentDepth, context);
+        drawSegments(95, littleContext, false, ['#d0b58f', '#f6e9e0'], true);
 
-        function drawSegments(depth, stroke=false, colors=['red', 'black'], inner=false) {
+        function drawSegments(depth, context, stroke=false, colors=['red', 'black'], inner=false) {
                         
             var startPosition = 0            
             for (var i = 0; i < segments; i++) {
