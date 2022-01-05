@@ -11,9 +11,9 @@
     <script src="https://unpkg.com/vue@next"></script>
 
 </head>
-<body class="bg-black flex items-center justify-center">
+<body class="bg-black bg-opacity-90 flex items-center justify-center">
     
-    <div class="relative bg-black bg-opacity-90 flex items-center justify-center w-[500px] h-[500px]" id="app">
+    <div class="relative flex items-center justify-center w-[500px] h-[500px]" id="app">
 
         <div class="absolute z-20 w-6 h-8 bg-white bottom-[430px]"
             style="clip-path: polygon(100% 0%, 50% 100%, 0% 0%);">
@@ -39,11 +39,11 @@
 
             <canvas class="absolute" width="500" height="500" ref="little-wheel"></canvas>
     
-            <div v-for="index in 38" :key="index" 
+            <div v-for="index in 38" :key="index"
                 class="absolute origin-bottom bottom-[50%] h-[180px] font-bold text-white"
                 :class="['rotate-[' + (360 / 38) * index + 'deg]']">
-                <span>
-                    {{ lottoNumbers(index) }}
+                <span v-if="!greenZone(numbers[index - 1])">
+                    {{ numbers[index - 1] }}
                 </span>
             </div>
 

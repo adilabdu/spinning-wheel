@@ -1,6 +1,12 @@
 const app = Vue.createApp({
     data() {
         return {
+            numbers: [
+                30, 11, 7, 20, 32, 17, 5, 22, 34, 15, 
+                3, 24, 36, 13, 1, 0, 27, 10, 25, 29, 
+                12, 8, 19, 31, 18, 6, 21, 33, 16, 4, 
+                23, 35, 14, 2, 0, 28, 9, 26
+            ],
             innerLabels: [6, 12, 19, 25, 31, 38],
             labels: {
                 6: "B",
@@ -12,7 +18,7 @@ const app = Vue.createApp({
             },
             offset: 0,
 
-            spinTimes: 20,
+            spinTimes: 10,
             spinSpeed: '10s',
             spinToDegree: 0,
             rotate: 0,
@@ -23,7 +29,7 @@ const app = Vue.createApp({
             segments: 38,
             depth: 200,
 
-            lotto: 0,   // Pass the winner number to this data.
+            lotto: 2,   // Pass the winner number to this data.
                         // It accepts all integers, but returns unpredictable
                         // results for numbers outside [0, 36] range
                         // Pass 0 to fall under one of the green zones.
@@ -36,18 +42,16 @@ const app = Vue.createApp({
             return this.innerLabels.includes(index)
         },
 
-        lottoNumbers(index) {
-
-            if(index < 16) return index
-            if(index > 16 && index < 35) return index - 1
-            if(index > 35) return index - 2
-
-            return
-        },
-
         spinWheel() {  
 
-            let tilt = this.mapNumberToWheel( this.lotto )
+            let tilt = this.mapNumberToWheel( 
+                this.lotto === 0 ? 
+                    this.numbers.indexOf(
+                        this.lotto, 
+                        [0, 20][this.fallWithinRange(0, 1)]) + 1 : 
+                    this.numbers.indexOf(this.lotto) + 1 
+                )
+
             tilt = this.fallWithinRange(tilt - (360/38/2), tilt + (360/38/2))
     
             this.rotate += Math.ceil(tilt);
@@ -55,18 +59,17 @@ const app = Vue.createApp({
             this.rotate += Math.ceil(360 * this.spinTimes + (360 - tilt));
 
             // Set lotto to random number on mount, for testing purposes
-            /*
-            this.lotto = this.fallWithinRange(0, 36)
-            console.log("Next Lotto Number is: ", this.lotto)
-            */
 
+            // this.lotto = this.fallWithinRange(0, 36)
+            // console.log("Next Lotto Number is: ", this.lotto)
+        },
+
+        greenZone(index) {
+
+            return index === 0
         },
 
         mapNumberToWheel(number) {
-
-            if(number >= 16 && number < 35) number += 1
-            if(number >= 35) number += 2
-            if(number === 0) number = [16, 35][this.fallWithinRange(0, 1)] 
 
             return Math.abs(38 - number) * (360 / 38)
         },
@@ -139,13 +142,13 @@ const app = Vue.createApp({
         this.canvas = this.$refs['big-wheel']
         this.littleCanvas = this.$refs['little-wheel']
     
-        this.drawWheel(this.canvas, this.depth, ['red', 'black'])
+        this.drawWheel(this.canvas, this.depth, ['black', 'red'])
         this.drawWheel(this.littleCanvas, this.depth - 105, ['#d0b58f', '#f6e9e0'], stroke=false, inner=true)
 
         // Set lotto to random number on mount, for testing purposes
-        /*
-        this.lotto = this.fallWithinRange(0, 36)
-        console.log("Lotto number is: ", this.lotto)
-        */
+        
+        // this.lotto = this.fallWithinRange(0, 36)
+        // console.log("Lotto number is: ", this.lotto)
+        console.log(this.numbers.length)
     }
 })
