@@ -30,6 +30,7 @@ const app = Vue.createApp({
 
         }
     },
+
     methods: {
         showLabel(index) {
             return this.innerLabels.includes(index)
@@ -135,7 +136,6 @@ const app = Vue.createApp({
     },
 
     mounted() {
-
         this.canvas = this.$refs['big-wheel']
         this.littleCanvas = this.$refs['little-wheel']
     
@@ -147,6 +147,5 @@ const app = Vue.createApp({
         this.lotto = this.fallWithinRange(0, 36)
         console.log("Lotto number is: ", this.lotto)
         */
-
     }
 })
