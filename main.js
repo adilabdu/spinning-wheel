@@ -10,6 +10,8 @@ const app = Vue.createApp({
                 31: "F",
                 38: "A"
             },
+            offset: 0,
+
             spinTimes: 20,
             spinSpeed: '10s',
             spinToDegree: 0,
@@ -21,13 +23,22 @@ const app = Vue.createApp({
             segments: 38,
             depth: 200,
 
-            lotto: 10,
+            lotto: 0,
 
         }
     },
     methods: {
         showLabel(index) {
             return this.innerLabels.includes(index)
+        },
+
+        lottoNumbers(index) {
+
+            if(index < 16) return index
+            if(index > 16 && index < 35) return index - 1
+            if(index > 35) return index - 2
+
+            return
         },
 
         spinWheel() {  
@@ -41,6 +52,11 @@ const app = Vue.createApp({
         },
 
         mapNumberToWheel(number) {
+
+            if(number >= 16 && number < 35) number += 1
+            if(number >= 35) number += 2
+            if(number === 0) number = [16, 35][this.fallWithinRange(0, 1)] 
+
             return Math.abs(38 - number) * (360 / 38)
         },
 
@@ -75,7 +91,6 @@ const app = Vue.createApp({
                     context.lineWidth = 1.5;
                     context.strokeStyle = (i >= 0 && i < 6) || (i >= 13 && i < 19) || (i > 25 && i < 32) ? 
                                     colors[0] : colors[1];
-                    console.log(colors[0])
                     context.stroke();
                 }
 
@@ -113,8 +128,6 @@ const app = Vue.createApp({
 
         this.canvas = this.$refs['big-wheel']
         this.littleCanvas = this.$refs['little-wheel']
-
-        console.log(this.canvas.width, "canvas")
     
         this.drawWheel(this.canvas, this.depth, ['red', 'black'])
         this.drawWheel(this.littleCanvas, this.depth - 105, ['#d0b58f', '#f6e9e0'], stroke=false, inner=true)
