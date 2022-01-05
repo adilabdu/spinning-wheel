@@ -52,6 +52,13 @@ const app = Vue.createApp({
             this.rotate += Math.ceil(tilt);
             this.spinToDegree = this.rotate;
             this.rotate += Math.ceil(360 * this.spinTimes + (360 - tilt));
+
+            // Set lotto to random number on mount, for testing purposes
+            /*
+            this.lotto = this.fallWithinRange(0, 36)
+            console.log("Next Lotto Number is: ", this.lotto)
+            */
+
         },
 
         mapNumberToWheel(number) {
@@ -134,6 +141,12 @@ const app = Vue.createApp({
     
         this.drawWheel(this.canvas, this.depth, ['red', 'black'])
         this.drawWheel(this.littleCanvas, this.depth - 105, ['#d0b58f', '#f6e9e0'], stroke=false, inner=true)
+
+        // Set lotto to random number on mount, for testing purposes
+        /*
+        this.lotto = this.fallWithinRange(0, 36)
+        console.log("Lotto number is: ", this.lotto)
+        */
 
     }
 })
