@@ -23,7 +23,10 @@ const app = Vue.createApp({
             segments: 38,
             depth: 200,
 
-            lotto: 0,
+            lotto: 0,   // Pass the winner number to this data.
+                        // It accepts all integers, but returns unpredictable
+                        // results for numbers outside [0, 36] range
+                        // Pass 0 to fall under one of the green zones.
 
         }
     },
