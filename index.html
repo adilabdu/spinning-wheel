@@ -11,22 +11,25 @@
     <script src="https://unpkg.com/vue@next"></script>
 
 </head>
-<body class="">
+<body class="bg-black flex">
     
-    <div class="relative flex items-center justify-center h-screen bg-black bg-opacity-90 overflow-hidden" id="app">
+    <div class="relative bg-black bg-opacity-90 flex items-center justify-center w-[500px] h-[500px]" id="app">
 
-        <button id="spin">Spin</button>
+        <div>
+            <button @click="spinWheel" class="absolute z-10 w-[80px] h-[80px] bg-[#e2e2e2] uppercase border border-[#fff] rounded-[50%] cursor-pointer tracking-[1px] border-[8px] font-bold text-[20px] text-[#a2a2a2] -translate-y-1/2 -translate-x-1/2" id="spin">Spin</button>
+        </div>
 
         <div class="w-[390px] h-[390px] rounded-[50%] blur bg-white absolute">
         </div>
 
-        <div class="flex items-center justify-center wheel">
-            <canvas class="absolute" width="1000" height="1000" id="canvas"></canvas>
+        <div class="w-[390px] h-[390px] absolute flex items-center justify-center wheel ease-in-out"
+            :class="['rotate-[' + spinToDegree + 'deg]', 'duration-[' + spinSpeed + ']']">
+            <canvas class="absolute" width="500" height="500" ref="big-wheel"></canvas>
 
             <div class="w-[190px] h-[190px] rounded-[50%] blur-lg bg-black absolute">
             </div>
 
-            <canvas class="absolute" width="1000" height="1000" id="little-wheel"></canvas>
+            <canvas class="absolute" width="500" height="500" ref="little-wheel"></canvas>
     
             <div v-for="index in 38" :key="index" 
                 class="absolute origin-bottom bottom-[50%] h-[180px] font-bold text-white"
@@ -41,7 +44,6 @@
                 <span v-if="showLabel(index)">{{ labels[index] }}</span>
             </div>
         </div>
-
         
     </div>
 
@@ -53,101 +55,7 @@
 
     </script>
 
-    <script>
-
-        var canvas = document.getElementById('canvas');
-        var littleCanvas = document.getElementById('little-wheel');
-
-        var context = canvas.getContext('2d');
-        var littleContext = littleCanvas.getContext('2d');
-
-        var x = canvas.width / 2;
-        var y = canvas.height / 2;
-
-        var segments = 38;
-        var segmentWidth = 360 / segments;
-        var pieAngle = 2 * Math.PI / segments;
-        var segmentDepth = 200;
-
-        drawSegments(segmentDepth, context);
-        drawSegments(95, littleContext, false, ['#d0b58f', '#f6e9e0'], true);
-
-        function drawSegments(depth, context, stroke=false, colors=['red', 'black'], inner=false) {
-                        
-            var startPosition = 0            
-            for (var i = 0; i < segments; i++) {
-            
-                context.beginPath();
-                context.moveTo(x, y);
-                context.arc(x, y, depth, startPosition, startPosition + pieAngle, false);
-                context.fillStyle = i % 2 === 0 ? colors[0] : colors[1];
-
-                if(inner) {
-                    context.fillStyle = (i >= 0 && i < 6) || (i >= 13 && i < 19) || (i > 25 && i < 32) ? 
-                                    colors[0] : colors[1];
-                    context.lineWidth = 1.5;
-                    context.strokeStyle = (i >= 0 && i < 6) || (i >= 13 && i < 19) || (i > 25 && i < 32) ? 
-                                    colors[0] : colors[1];
-                    context.stroke();
-                }
-
-                if(i == 6 || i == 25) {
-                    context.fillStyle = inner ? '#b47935' : 'green';
-                    context.lineWidth = 1.5;
-                    context.strokeStyle = inner ? '#b47935' : 'green';
-                    context.stroke(); 
-                }
-
-                context.fill();
-
-                if(stroke) {
-                    context.lineWidth = 2;
-                    context.strokeStyle = '#444';
-                    context.stroke();
-                }
-
-                startPosition += pieAngle
-            }
-
-        }
-
-        let container = document.querySelector(".wheel");
-        let btn = document.getElementById("spin");
-        let number = Math.ceil(Math.random() * 1000);
-
-        btn.onclick = function () {
-            container.style.transform = "rotate(" + number + "deg)";
-            number += Math.ceil(Math.random() * 1000);
-        }
-
-    </script>
-
     <style>
-
-        #spin {
-            position: absolute;
-            top:50%;
-            left:50%;
-            transform:translate(-50%,-50%);
-            z-index:10;
-            background-color: #e2e2e2;
-            text-transform: uppercase;
-            border:8px solid #fff;
-            font-weight:bold;
-            font-size:20px;
-            color:#a2a2a2;
-            width: 80px;
-            height:80px;
-            font-family: sans-serif;
-            border-radius:50%;
-            cursor: pointer;
-            outline:none;
-            letter-spacing: 1px;
-        }
-
-        .wheel {
-            transition: 5s;
-        }
 
     </style>
 
