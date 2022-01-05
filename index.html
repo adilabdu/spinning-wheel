@@ -34,14 +34,17 @@
             <div v-for="index in 38" :key="index" 
                 class="absolute origin-bottom bottom-[50%] h-[180px] font-bold text-white"
                 :class="['rotate-[' + (360 / 38) * index + 'deg]']">
-                {{ index }}
+                <span>
+                    {{ lottoNumbers(index) }}
+                </span>
             </div>
 
             <div v-for="index in 38" :key="index" 
                 class="absolute origin-bottom bottom-[50%] h-[80px] font-bold text-black text-xl"
                 :class="['rotate-[' + (360 / 38) * index + 'deg]']">
-                <!-- {{ index }} -->
-                <span v-if="showLabel(index)">{{ labels[index] }}</span>
+                <span v-if="showLabel(index)">
+                    {{ labels[index] }}
+                </span>
             </div>
         </div>
         
