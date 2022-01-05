@@ -47,7 +47,7 @@ const app = Vue.createApp({
         fallWithinRange(min, max) {
             min = Math.ceil(min);
             max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+            return Math.floor(Math.random() * (max - min + 1) + min);
         },
         
         drawWheel(canvas, depth, colors, stroke=false, inner=false) {
@@ -62,7 +62,6 @@ const app = Vue.createApp({
         drawSegments(context, depth, center, colors, stroke=false, inner=false) {
 
             let start = 0
-            // Array(this.segments).keys().forEach(function (_, i) 
             for(let i = 0; i < this.segments; i++) {
 
                 context.beginPath()
