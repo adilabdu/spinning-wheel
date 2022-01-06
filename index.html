@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./main.css" rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300&display=swap" rel="stylesheet">
+
     <title>Spinning Wheel</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,49 +17,61 @@
 </head>
 <body class="bg-black bg-opacity-90 flex items-center justify-center">
     
-    <div class="relative flex items-center justify-center w-[500px] h-[500px]" id="app">
+    <div class="overflow-hidden" id="app">
 
-        <div class="absolute z-20 w-6 h-8 bg-white bottom-[430px]"
-            style="clip-path: polygon(100% 0%, 50% 100%, 0% 0%);">
-        </div>
-        <div class="absolute z-20 w-6 h-8 bg-stone-300 bottom-[430px]"
-            style="clip-path: polygon(75% 10%, 50% 60%, 25% 10%);">
-        </div>        
+        <div class="relative flex items-center justify-center"
+        :class="['w-[' + ((depth * 2) + 40) + 'px]', 'h-[' + ((depth * 2) + 40) + 'px]']">
 
-        <div class="z-10 w-[80px] h-[80px] rounded-[50%] blur-lg bg-black bg-opacity-60 absolute">
-        </div>
-        <button @click="spinWheel" class="absolute z-10 w-[80px] h-[80px] bg-[#e2e2e2] uppercase border border-white rounded-[50%] cursor-pointer tracking-[1px] border-[8px] font-bold text-[20px] text-[#a2a2a2]" id="spin">Spin</button>
-
-
-        <div class="w-[390px] h-[390px] rounded-[50%] blur bg-white absolute">
-        </div>
-
-        <div class="w-[390px] h-[390px] absolute flex items-center justify-center wheel ease-in-out"
-            :class="['rotate-[' + spinToDegree + 'deg]', 'duration-[' + spinSpeed + ']']">
-            <canvas class="absolute" width="500" height="500" ref="big-wheel"></canvas>
-
-            <div class="w-[190px] h-[190px] rounded-[50%] blur-lg bg-black absolute">
+            <div class="absolute z-20 w-6 h-8 bg-white"
+                :class="'top-0'"
+                style="clip-path: polygon(100% 0%, 50% 100%, 0% 0%);">
             </div>
+            <div class="absolute z-20 w-6 h-8 bg-stone-300"
+                :class="'top-0'"
+                style="clip-path: polygon(75% 10%, 50% 60%, 25% 10%);">
+            </div> 
 
-            <canvas class="absolute" width="500" height="500" ref="little-wheel"></canvas>
-    
-            <div v-for="index in 38" :key="index"
-                class="absolute origin-bottom bottom-[50%] h-[180px] font-bold text-white"
-                :class="['rotate-[' + (360 / 38) * index + 'deg]']">
-                <span v-if="!greenZone(numbers[index - 1])">
-                    {{ numbers[index - 1] }}
-                </span>
-            </div>
+            <div ref="deck" id="deck" class="absolute flex items-center justify-center wheel ease-in-out"
+                :class="['rotate-[' + spinToDegree + 'deg]', 'duration-[' + spinSpeed + 's]']">       
 
-            <div v-for="index in 38" :key="index" 
-                class="absolute origin-bottom bottom-[50%] h-[80px] font-bold text-black text-xl"
-                :class="['rotate-[' + (360 / 38) * index + 'deg]']">
-                <span v-if="showLabel(index)">
-                    {{ labels[index] }}
-                </span>
-            </div>
-        </div>
+                <div class="z-10 w-[80px] h-[80px] rounded-[50%] blur-lg bg-black bg-opacity-60 absolute">
+                </div>
+                <button @click="spinWheel" class="text-4xl absolute z-10 w-[80px] h-[80px] bg-[#e2e2e2] uppercase border border-white rounded-[50%] cursor-pointer border-[8px] font-bold text-[#a2a2a2]">
+                    {{ displayNumber }}
+                </button>
+
+
+                <div class="rounded-[50%] blur bg-black absolute"
+                :class="['w-[' + depth * 2 + 'px]', 'h-[' + depth * 2 + 'px]']">
+                </div>
+                
+                <canvas class="absolute" :width="deckSize" :height="deckSize" ref="big-wheel"></canvas>
+
+                <div class="rounded-[50%] blur-lg bg-black absolute"
+                    :class="['w-[' + littleDepth * 2 + 'px]', 'h-[' + littleDepth * 2 + 'px]']">
+                </div>
+
+                <canvas class="absolute" :width="deckSize" :height="deckSize" ref="little-wheel"></canvas>
         
+                <div v-for="index in 38" :key="index"
+                    class="absolute origin-bottom bottom-[50%] font-bold text-white"
+                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((depth - 10)) + 'px]']">
+                    <span v-if="!greenZone(numbers[index - 1])">
+                        {{ numbers[index - 1] }}
+                    </span>
+                </div>
+
+                <div v-for="index in 38" :key="index" 
+                    class="absolute origin-bottom bottom-[50%] font-bold text-black text-xl"
+                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((littleDepth - 10)) + 'px]']">
+                    <span v-if="showLabel(index)">
+                        {{ labels[index] }}
+                    </span>
+                </div>
+            </div>
+            
+        </div>
+
     </div>
 
     <script src="./main.js"></script>
@@ -68,21 +84,8 @@
 
     <style>
 
-        @font-face {
-            font-family: 'SanFrancisco';
-            font-style: normal;
-            font-weight: 400;
-            src: url("SanFrancisco-Regular.otf") format("opentype");
-        }
-
-        @font-face {
-            font-family: 'SanFrancisco';
-            font-weight: bold;
-            src: url("SanFrancisco-Bold.ttf");
-        }
-
         body {
-            font-family: BlinkMacSystemFont, SanFrancisco, sans-serif;
+            font-family: 'Oswald', sans-serif;
         }
 
     </style>

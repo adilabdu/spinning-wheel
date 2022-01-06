@@ -16,20 +16,24 @@ const app = Vue.createApp({
                 31: "F",
                 38: "A"
             },
-            offset: 0,
+            displayNumber: 30,
 
             spinTimes: 10,
-            spinSpeed: '10s',
+            spinSpeed: 10,
             spinToDegree: 0,
             rotate: 0,
 
+            deckSize: window.innerHeight > window.innerWidth ?
+                window.innerWidth - 10 :
+                window.innerHeight - 10,
             canvas: null,
             littleCanvas: null,
             
             segments: 38,
-            depth: 200,
+            depth: Number,
+            littleDepth: 0,
 
-            lotto: 2,   // Pass the winner number to this data.
+            lotto: 20,   // Pass the winner number to this data.
                         // It accepts all integers, but returns unpredictable
                         // results for numbers outside [0, 36] range
                         // Pass 0 to fall under one of the green zones.
@@ -57,11 +61,22 @@ const app = Vue.createApp({
             this.rotate += Math.ceil(tilt);
             this.spinToDegree = this.rotate;
             this.rotate += Math.ceil(360 * this.spinTimes + (360 - tilt));
+            this.spinNumber()
+        },
 
-            // Set lotto to random number on mount, for testing purposes
+        async spinNumber() {
 
-            // this.lotto = this.fallWithinRange(0, 36)
-            // console.log("Next Lotto Number is: ", this.lotto)
+            for(_ in [...Array(this.spinTimes).keys()]) {
+                for(i in this.numbers) {
+                    this.displayNumber = this.numbers[i]
+                    await this.timeout(this.spinSpeed / this.segments / this.spinTimes * 1000)
+                }
+            }
+
+        },
+
+        timeout(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         },
 
         greenZone(index) {
@@ -134,6 +149,9 @@ const app = Vue.createApp({
         }
     },
 
+    watch: {
+    },
+
     created() {
         this.rotate = Math.ceil(360 * this.spinTimes)
     },
@@ -141,14 +159,11 @@ const app = Vue.createApp({
     mounted() {
         this.canvas = this.$refs['big-wheel']
         this.littleCanvas = this.$refs['little-wheel']
+
+        this.depth = this.deckSize / 2.5
+        this.littleDepth = this.depth / 2
     
         this.drawWheel(this.canvas, this.depth, ['black', 'red'])
-        this.drawWheel(this.littleCanvas, this.depth - 105, ['#d0b58f', '#f6e9e0'], stroke=false, inner=true)
-
-        // Set lotto to random number on mount, for testing purposes
-        
-        // this.lotto = this.fallWithinRange(0, 36)
-        // console.log("Lotto number is: ", this.lotto)
-        console.log(this.numbers.length)
+        this.drawWheel(this.littleCanvas, this.littleDepth, ['#d0b58f', '#f6e9e0'], stroke=false, inner=true)
     }
 })
