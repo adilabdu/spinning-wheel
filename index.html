@@ -31,18 +31,20 @@
                 style="clip-path: polygon(75% 10%, 50% 60%, 25% 10%);">
             </div> 
 
+            <div class="z-10 rounded-[50%] blur-lg bg-black bg-opacity-60 absolute"
+                :class="['w-[' +  depth / 3 + 'px]', 'h-[' +  depth / 3 + 'px]']">
+            </div>
+            <button @click="spinWheel" class="lg:text-5xl md:text-3xl text-xl absolute z-10 bg-[#e2e2e2] uppercase border border-white rounded-[50%] cursor-pointer border-[8px] font-bold text-[#a2a2a2]"
+                    :class="['w-[' +  depth / 3 + 'px]', 'h-[' +  depth / 3 + 'px]']">
+                <!-- {{ displayNumber }} -->
+                SPIN
+            </button>
+
             <div ref="deck" id="deck" class="absolute flex items-center justify-center wheel ease-in-out"
                 :class="['rotate-[' + spinToDegree + 'deg]', 'duration-[' + spinSpeed + 's]']">       
 
-                <div class="z-10 w-[80px] h-[80px] rounded-[50%] blur-lg bg-black bg-opacity-60 absolute">
-                </div>
-                <button @click="spinWheel" class="text-4xl absolute z-10 w-[80px] h-[80px] bg-[#e2e2e2] uppercase border border-white rounded-[50%] cursor-pointer border-[8px] font-bold text-[#a2a2a2]">
-                    {{ displayNumber }}
-                </button>
-
-
                 <div class="rounded-[50%] blur bg-black absolute"
-                :class="['w-[' + depth * 2 + 'px]', 'h-[' + depth * 2 + 'px]']">
+                    :class="['w-[' + depth * 2 + 'px]', 'h-[' + depth * 2 + 'px]']">
                 </div>
                 
                 <canvas class="absolute" :width="deckSize" :height="deckSize" ref="big-wheel"></canvas>
@@ -54,16 +56,16 @@
                 <canvas class="absolute" :width="deckSize" :height="deckSize" ref="little-wheel"></canvas>
         
                 <div v-for="index in 38" :key="index"
-                    class="absolute origin-bottom bottom-[50%] font-bold text-white"
-                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((depth - 10)) + 'px]']">
+                    class="absolute origin-bottom bottom-[50%] font-bold text-white lg:text-5xl md:text-3xl text-xl"
+                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((depth - 20)) + 'px]']">
                     <span v-if="!greenZone(numbers[index - 1])">
                         {{ numbers[index - 1] }}
                     </span>
                 </div>
 
                 <div v-for="index in 38" :key="index" 
-                    class="absolute origin-bottom bottom-[50%] font-bold text-black text-xl"
-                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((littleDepth - 10)) + 'px]']">
+                    class="absolute origin-bottom bottom-[50%] font-bold text-black lg:text-5xl md:text-3xl text-xl"
+                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((littleDepth - 20)) + 'px]']">
                     <span v-if="showLabel(index)">
                         {{ labels[index] }}
                     </span>

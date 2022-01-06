@@ -18,7 +18,7 @@ const app = Vue.createApp({
             },
             displayNumber: 30,
 
-            spinTimes: 10,
+            spinTimes: 30,
             spinSpeed: 10,
             spinToDegree: 0,
             rotate: 0,
