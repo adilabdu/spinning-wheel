@@ -56,7 +56,7 @@ const app = Vue.createApp({
                     this.numbers.indexOf(this.lotto) + 1 
                 )
 
-            tilt = this.fallWithinRange(tilt - (360/38/2), tilt + (360/38/2))
+            tilt = this.fallWithinRange(tilt - (360 / this.segments / 2), tilt + (360 / this.segments / 2))
     
             this.rotate += Math.ceil(tilt);
             this.spinToDegree = this.rotate;
@@ -86,7 +86,7 @@ const app = Vue.createApp({
 
         mapNumberToWheel(number) {
 
-            return Math.abs(38 - number) * (360 / 38)
+            return Math.abs(this.segments - number) * (360 / this.segments)
         },
 
         fallWithinRange(min, max) {

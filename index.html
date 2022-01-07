@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./main.css" rel="stylesheet">
 
+    <!--Oswald-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300&display=swap" rel="stylesheet">
@@ -55,17 +56,17 @@
 
                 <canvas class="absolute" :width="deckSize" :height="deckSize" ref="little-wheel"></canvas>
         
-                <div v-for="index in 38" :key="index"
+                <div v-for="index in segments" :key="index"
                     class="absolute origin-bottom bottom-[50%] font-bold text-white lg:text-5xl md:text-3xl text-xl"
-                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((depth - 20)) + 'px]']">
+                    :class="['rotate-[' + (360 / segments) * index + 'deg]', 'h-[' + ((depth - 20)) + 'px]']">
                     <span v-if="!greenZone(numbers[index - 1])">
                         {{ numbers[index - 1] }}
                     </span>
                 </div>
 
-                <div v-for="index in 38" :key="index" 
+                <div v-for="index in segments" :key="index" 
                     class="absolute origin-bottom bottom-[50%] font-bold text-black lg:text-5xl md:text-3xl text-xl"
-                    :class="['rotate-[' + (360 / 38) * index + 'deg]', 'h-[' + ((littleDepth - 20)) + 'px]']">
+                    :class="['rotate-[' + (360 / segments) * index + 'deg]', 'h-[' + ((littleDepth - 20)) + 'px]']">
                     <span v-if="showLabel(index)">
                         {{ labels[index] }}
                     </span>
